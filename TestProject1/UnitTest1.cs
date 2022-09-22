@@ -46,19 +46,25 @@ namespace TestProject1
         [Test]
         public void ClickOption()
         {
-            IReadOnlyList<IWebElement> Items = driver.FindElements(By.TagName("input"));
+            IReadOnlyList<IWebElement> Items = driver.FindElements(By.TagName("li"));
+            IWebElement span = null;
+            int count = 1;
+           // span = driver.FindElement(By.XPath("/html/body/div/div/div/ul/li['" + count + "']/span"));
             foreach (IWebElement e in Items)
             {
-                Console.WriteLine(e.Text);
-                if (e.Text.Equals("Third Item"))
+               
+                span = driver.FindElement(By.XPath("/html/body/div/div/div/ul/li['"+count+"']/span"));
+                Console.WriteLine(span.Text + "count " + count); ;
+                if (span.Text.Equals("Third Item"))
                 {
                     e.Click();
                     break;
                 }
+                count++;
             }
             IWebElement checkThird = driver.FindElement(By.XPath("/html/body/div/div/div/ul/li[3]/input"));
 
-            // ThirdItem.Click();
+            checkThird.Click();
             if (checkThird.Selected)
             {
                 resultado = true;
@@ -80,7 +86,7 @@ namespace TestProject1
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("no-sandbox");
             driver = new RemoteWebDriver(new Uri(seleniumHub), options);
-          //  driver = new ChromeDriver();
+            //  driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
             driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
