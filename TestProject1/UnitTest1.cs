@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Threading;
 using System;
 using System.Collections.Generic;
+using OpenQA.Selenium.Remote;
 
 namespace TestProject1
 {
@@ -14,6 +15,7 @@ namespace TestProject1
     {
         private IWebDriver driver = null;
         public bool resultado = false;
+        public static string seleniumHub = "http://192.168.1.9:4444/wd/hub";
         [SetUp]
         public void Setup()
         {
@@ -75,7 +77,10 @@ namespace TestProject1
 
         public IWebDriver IniciarNavegador()
         {
-            driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("no-sandbox");
+            driver = new RemoteWebDriver(new Uri(seleniumHub), options);
+          //  driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
             driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
